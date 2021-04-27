@@ -1,7 +1,7 @@
 # ~ import xlrd # to convert numbers to column letters
 # ~ from xlsxwriter.utility import xl_rowcol_to_cell
 # ~ import xlwt # to convert numbers to column letters, zero indexed
-import pyodbc # M$Sql
+# import pyodbc # M$Sql
 # ~ from openpyxl import Workbook # row/column 1/1 = A1
 # ~ from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, NamedStyle
 from openpyxl import load_workbook # read the files
