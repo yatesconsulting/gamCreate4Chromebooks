@@ -1,20 +1,11 @@
-# ~ import xlrd # to convert numbers to column letters
-# ~ from xlsxwriter.utility import xl_rowcol_to_cell
-# ~ import xlwt # to convert numbers to column letters, zero indexed
-# import pyodbc # M$Sql
-# ~ from openpyxl import Workbook # row/column 1/1 = A1
-# ~ from openpyxl.styles import PatternFill, Border, Side, Alignment, Protection, Font, NamedStyle
-from openpyxl import load_workbook # read the files
+#!/usr/bin/python3
 
-# ~ import openpyxl
-# ~ import re
-# ~ import sys
-import glob
+from openpyxl import load_workbook # read the excel files
+import glob # for looping over all Excel files
 import os #  for pipe and environ
-import csv
-import subprocess
-
-# "Code" file info - which ones to process
+import csv # for processing output of gam print cros...
+import subprocess # for running gam commands
+ 
 codesfilename = "codes.xlsx"
 school2ou = {}
 school2notes = {}
@@ -22,30 +13,31 @@ school2email = {}
 school2location = {}
 school2destiny = {}
 s2dcsv = ['SCHOOL,BARCODE,CF1:NAME,CF2:NOTES']
+gamexe = "gam"
 
 # from Connie's file(s), s/n to tag# and school
+# edit (14,44) if you use a different range of rows, around line  117
 sntotag = {}
 sntoschool = {}
 cmd = []
 
-
-				
 def doesthisouexistingoogleadmin(ou):
-	with os.popen('gam info org "{}" nousers'.format(ou)) as pipe:
+	with os.popen('{} info org "{}" nousers'.format(gamexe, ou)) as pipe:
 		a = pipe.readlines()
 		lena = len(a)
 		if (0 == lena):
-			# ~ print("No good, should I check up the tree?")
 			return False
 		else:
 			return True
 
 def gamcreatecommand(ou):
-	return 'gam create org "{}"'.format(ou)
+	return '{} create org "{}"'.format(gamexe, ou)
 
 def createou(ou):
-	# if creating OU has no /, then it's at the top level, and probably NOT right
-	# if creating OU, find a good base, then build all the OUs after that base
+	# return a list of OU create commands for this ou and any missing base OUs (recursivly)
+	# sloppy error routines, exit program on fail
+	# - if creating OU has no /, then it's at the top level, and probably NOT right
+	# - if creating OU, find a good base, then build all the OUs after that base
 	if not isinstance(ou,str):
 		print("ERROR, I only do one OU at a time, something is terribly wrong.")
 		exit()
@@ -79,6 +71,7 @@ for f in glob.glob("*.xls*"):
 		print ("Gathering which school(s) to process, from {}. Error 404's are OK.".format(f))
 		wb = load_workbook(f, read_only=True, data_only=True)
 		ws1 = wb.active
+		# loop over codes.xlsx for school info
 		for r in range(2,30):
 			school = ws1["a{}".format(r)].value
 			targetou = ws1["b{}".format(r)].value
@@ -87,7 +80,6 @@ for f in glob.glob("*.xls*"):
 			location = ws1["e{}".format(r)].value
 			destiny = ws1["f{}".format(r)].value
 			if (isinstance(emailconf,str) and isinstance(targetou,str) and isinstance(school,str) and school[:2].upper() != "EX"):
-				# ~ print ("s/n: ;;{};; = tag ;;{}CB-{};;".format(serial,school,tag))
 				school = school.strip()
 				targetou = targetou.strip()
 				emailconf = emailconf.strip()
@@ -121,7 +113,7 @@ for f in glob.glob("*.xls*"):
 		for s in wb.sheetnames:
 			# ~ print("worksheet {}".format(s))
 			ws1 = wb[s]
-			for r in range(14,44):
+			for r in range(2,44):
 				tag = ws1["b{}".format(r)].value
 				serial = ws1["c{}".format(r)].value
 				desc = ws1["d{}".format(r)].value
@@ -129,8 +121,6 @@ for f in glob.glob("*.xls*"):
 				room = ws1["f{}".format(r)].value
 				fulltag = "{}CB-{}".format(school,tag)
 				if (isinstance(serial,str) and serial not in ("No Number","None") and isinstance(school,str)):
-					# ~ print ("s/n: ;;{};; = tag ;;{}CB-{};;".format(serial,school,tag))
-					# ~ print(ws1['A18'].value)
 					serial = serial.strip()
 					school = school.strip()
 					if serial in sntotag.keys():
@@ -153,7 +143,7 @@ cmd = sorted(list(set(cmd)))
 # ~ exit()
 
 # ~ Now loop over all the OU / CrOS devices and add them to the list, if appropriate
-with os.popen('gam print cros limit_to_ou / fields deviceId,serialNumber,status,lastSync,annotatedUser,annotatedLocation,annotatedAssetId,lastEnrollmentTime,orgUnitPath,notes') as pipe:
+with os.popen('{} print cros limit_to_ou / fields deviceId,serialNumber,status,lastSync,annotatedUser,annotatedLocation,annotatedAssetId,lastEnrollmentTime,orgUnitPath,notes'.format(gamexe)) as pipe:
 	reader = csv.DictReader(pipe)
 	for row in reader:
 		# ~ if this chromebook sn -> connie's file for school and tag -> codes for owners email
@@ -168,7 +158,7 @@ with os.popen('gam print cros limit_to_ou / fields deviceId,serialNumber,status,
 			mname = sntotag[sn]
 			notes = school2notes[school]
 			destou = school2ou[school]		
-			cmd.append('gam update cros query:id:{} notes "{}" ou "{}" assetid "{}" location "{}"'.format(sn,notes,destou,mname,loc))
+			cmd.append('{} update cros query:id:{} notes "{}" ou "{}" assetid "{}" location "{}"'.format(gamexe,sn,notes,destou,mname,loc))
 			# print(cmd[-1])
 			if (school2destiny[school]):
 				# add to destiny CSV also
