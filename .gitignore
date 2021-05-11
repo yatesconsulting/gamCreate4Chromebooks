@@ -123,6 +123,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-Copy of PO 212143 CES_ETI SMS CHROMEBOOKS.xlsx
-PO 212145 CES_ETI BMS CHROMEBOOKS.xlsx
 *.csv
+*.xlsx
+!codes.xlsx

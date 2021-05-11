@@ -72,7 +72,7 @@ for f in glob.glob("*.xls*"):
 		wb = load_workbook(f, read_only=True, data_only=True)
 		ws1 = wb.active
 		# loop over codes.xlsx for school info
-		for r in range(2,30):
+		for r in range(2,50):
 			school = ws1["a{}".format(r)].value
 			targetou = ws1["b{}".format(r)].value
 			emailconf = ws1["c{}".format(r)].value
@@ -109,24 +109,24 @@ for f in glob.glob("*.xls*"):
 		wb.close()
 	else:
 		print ("Adding lookups for serial/tags from {}".format(f))
-		wb = load_workbook(f, read_only=True)
+		wb = load_workbook(f, read_only=True, data_only=True)
 		for s in wb.sheetnames:
 			# ~ print("worksheet {}".format(s))
 			ws1 = wb[s]
-			for r in range(2,44):
+			for r in range(2,200):
 				tag = ws1["b{}".format(r)].value
 				serial = ws1["c{}".format(r)].value
 				desc = ws1["d{}".format(r)].value
 				school = ws1["e{}".format(r)].value
 				room = ws1["f{}".format(r)].value
 				fulltag = "{}CB-{}".format(school,tag)
-				if (isinstance(serial,str) and serial not in ("No Number","None") and isinstance(school,str)):
+				if (isinstance(serial,str) and serial > "" and serial not in ("No Number","None") and isinstance(school,str)):
 					serial = serial.strip()
 					school = school.strip()
 					if serial in sntotag.keys():
 						# just ignore if same, otherwise red flag
 						if sntotag[serial] != fulltag:
-							print ("ERROR, dup serial: {} <> {}".format(sntotag[serial],fulltag))
+							print ("ERROR, dup serial on line {}: {} <> {}".format(r, sntotag[serial], fulltag))
 							# probably do something else here, this could be a real problem TODO
 							sntotag[serial] = 'dups {} {}'.format(sntotag[serial].replace("dups ",""),fulltag)
 					else:
@@ -174,8 +174,8 @@ if l > 0:
 	if l > 1:
 		sifplural = "s"
 	doit = input("You sure you want to run {} command{} [Y,n]? ".format(len(cmd),sifplural))
-	if (doit == "" or doit.lower()[0] == "y"):
-		print ("Ok, this will just take a minute...")
+	if (doit.strip() == "" or doit.lower().strip()[0] == "y"):
+		print ("Ok, this will take a few minutes...")
 		for c in cmd:
 			# execute c and display any errors to screen
 			print(c)
