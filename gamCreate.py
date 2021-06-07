@@ -5,7 +5,7 @@ import glob # for looping over all Excel files
 import os #  for pipe and environ
 import csv # for processing output of gam print cros...
 import subprocess # for running gam commands
- 
+
 codesfilename = "codes.xlsx"
 school2ou = {}
 school2notes = {}
@@ -79,7 +79,7 @@ for f in glob.glob("*.xls*"):
 			notes = ws1["d{}".format(r)].value
 			location = ws1["e{}".format(r)].value
 			destiny = ws1["f{}".format(r)].value
-			if (isinstance(emailconf,str) and isinstance(targetou,str) and isinstance(school,str) and school[:2].upper() != "EX"):
+			if (isinstance(emailconf,str) and isinstance(targetou,str) and isinstance(school,str) and school[:2].upper() != "EX" and emailconf[:3].upper() != "NOT"):
 				school = school.strip()
 				targetou = targetou.strip()
 				emailconf = emailconf.strip()
@@ -120,7 +120,9 @@ for f in glob.glob("*.xls*"):
 				school = ws1["e{}".format(r)].value
 				room = ws1["f{}".format(r)].value
 				fulltag = "{}CB-{}".format(school,tag)
-				if (isinstance(serial,str) and serial > "" and serial not in ("No Number","None") and isinstance(school,str)):
+				if (isinstance(serial,str) and serial > "" and serial not in ("No Number","None","Building","BLDG") and isinstance(school,str)): 
+					# ERROR, dup serial on line 13: BuildingCB-Tag # <> BLDGCB-Tag #
+
 					serial = serial.strip()
 					school = school.strip()
 					if serial in sntotag.keys():
@@ -128,7 +130,7 @@ for f in glob.glob("*.xls*"):
 						if sntotag[serial] != fulltag:
 							print ("ERROR, dup serial on line {}: {} <> {}".format(r, sntotag[serial], fulltag))
 							# probably do something else here, this could be a real problem TODO
-							sntotag[serial] = 'dups {} {}'.format(sntotag[serial].replace("dups ",""),fulltag)
+							# sntotag[serial] = 'dups {} {}'.format(sntotag[serial].replace("dups ",""),fulltag)
 					else:
 						sntotag[serial] = fulltag
 						sntoschool[serial] = school
@@ -189,11 +191,14 @@ if l > 0:
 			# drop header line if appending to the file
 			if os.path.exists(filename):
 				del s2dcsv[0]
+				destinyfileaction = 'appended'
+			else:
+				destinyfileaction = 'created'
 			f = open(filename, "a")  
 			for l in s2dcsv:
 				f.write("{}\n".format(l))
+			print ("filename {} {} for Destiny.".format(filename, destinyfileaction))
 			f.close()
-			print ("filename {} created/appended for Destiny.".format(filename))
 	else:
 		print("Maybe next time, thanks.")
 else:
