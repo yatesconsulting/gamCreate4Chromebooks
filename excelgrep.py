@@ -5,13 +5,12 @@ import glob # for looping over all Excel files
 import os #  for pipe and environ
 import csv # for processing output of gam print cros...
 import subprocess # for running gam commands
-
 import sys
 
 def searchfile(needle, fnames):
 	needle = "{}".format(needle).lower()
 	for f in glob.glob(fnames):
-		if "xls" not in f:
+		if ".xls" not in f:
 			continue
 		# print("Searching {}".format(f))
 		try:
@@ -40,20 +39,27 @@ def searchfile(needle, fnames):
 			print("Skipping {} because {}".format(f, sys.exc_info()[0]))
 		
 
-def getoptions(needle = sys.argv[1], fname = sys.argv[2]):
+def getoptions(needle = "", fname = ""):
 	# for a in (needle,fname):
 	# 	print ("found something: {}".format(a))
 	if needle > '' and fname > '':
 		return [needle, fname]
+	elif (len(sys.argv) > 2):
+		needle = sys.argv[1]
+		fname = sys.argv[2]
+	elif (len(sys.argv) == 2):
+		needle = sys.argv[1]
+		fname = '*.xls*'
 	else:
-		exit # could be more graceful
+		print("Enter the search term: ", end="")
+		needle = input().strip()
+		print("What file(s) do you want me to search? [*.xls*] ", end="")
+		fname = input().strip()
+		if (fname == ""):
+			fname = "*.xls*"
+	return [needle, fname]
 
 if __name__ == "__main__":
 	# excelgrep blah *files*
 	[needle, fnames] = getoptions()
 	searchfile(needle, fnames)
-
-
-
-
-
