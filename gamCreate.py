@@ -82,6 +82,8 @@ def fillglobalvarsfromcodeexcelfile(f):
 			if (destiny == "Yes"):
 				school2destiny[school] =  True
 				destinypartofmessage = " and added to Destiny file"
+			else:
+				school2destiny[school] =  False
 			school2ou[school] = targetou
 			school2email[school] = emailconf
 			ougood = doesthisouexistingoogleadmin(targetou)
@@ -150,9 +152,12 @@ def gamcroscheck():
 				destou = school2ou[school]		
 				cmd.append('{} update cros query:id:{} notes "{}" ou "{}" assetid "{}" location "{}"'.format(gamexe,sn,notes,destou,mname,loc))
 				# print(cmd[-1])
-				if (school2destiny[school]):
-					# add to destiny CSV also
-					s2dcsv.append("{},{},{},{}".format(school,sn,mname,notes))
+				try:
+					if (school2destiny[school]):
+						# add to destiny CSV also
+						s2dcsv.append("{},{},{},{}".format(school,sn,mname,notes))
+				except:
+					pass
 
 def warnthenruncmd():
 	print("--- Here's what I'm really going to do if you say yes: ---")
