@@ -10,8 +10,8 @@ Install Requirements
 
 Running the Program
 
-- Open and edit codes.xlsx to meet your needs
-- Save inventory xls* files in the same directory with code
+- copy codesExample.xlsx to codes.xls and edit to meet your needs
+- Save inventory xls* file(s) in the same directory with code
 - run Python code, hit enter when asked
 
 gamCreate4Chromebooks.py logic
@@ -26,6 +26,7 @@ gamCreate4Chromebooks.py logic
 
 codes.xlsx file requirements
 
+- copy from codesExample.xlsx for first use, or create from scratch
 - Sheets, just one please, named whatever you like
 - Rows, 2-29 are processed, search code for "range(2" if you need to change
 - A: School(required) (initials, any starting with EX are ignored)
