@@ -126,3 +126,4 @@ dmypy.json
 *.csv
 *.xlsx
 !codesExample.xlsx
+codes.xlsx
