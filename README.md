@@ -3,9 +3,14 @@ Use some spreadsheets to feed Google's gam to create OUs and relocate provisione
 
 Install Requirements
 
-- gam  https://github.com/jay0lee/GAM , then launch "gam info domain" to create project and authorize everything back and forth with your Admin.google.com account
-- python 3 https://www.python.org/downloads/ or Windows store
-- pip3 install openpyxl glob os csv subprocess
+- gam  https://github.com/jay0lee/GAM , then manually run "gam info domain" to create project and authorize everything back and forth with your Admin.google.com account.  Running "gam info domain" again should return a few lines from your domain, not prompt you for things each time, repeat until then.
+- python 3 https://www.python.org/downloads/ or Windows store, include it and pip3 in your PATH
+- pip3 install subprocess
+- pip3 install openpyxl
+- pip3 install glob
+- pip3 install csv
+- pip3 install os
+
 - keep everything in the same directory
 
 Running the Program
