@@ -16,8 +16,8 @@ Install Requirements
 Running the Program
 
 - copy codesExample.xlsx to codes.xls and edit to meet your needs
-- Save inventory xls* file(s) in the same directory with code
-- run Python code, hit enter when asked
+- Save inventory xls* file(s) in the same directory with code, School initials must be present in filename
+- CMD in same directory as code, "python gamCreate.py", and hit enter when asked
 
 gamCreate4Chromebooks.py logic
 
