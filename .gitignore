@@ -127,3 +127,5 @@ dmypy.json
 *.xlsx
 !codesExample.xlsx
 codes.xlsx
+*.xls
+.vscode/launch.json
