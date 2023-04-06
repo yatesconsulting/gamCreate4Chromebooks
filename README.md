@@ -3,16 +3,21 @@ Use some spreadsheets to feed Google's gam to create OUs and relocate provisione
 
 Install Requirements
 
-- gam  https://github.com/jay0lee/GAM
-- python 3 https://www.python.org/downloads/ or Windows store
-- pip3 install openpyxl glob os csv subprocess
+- gam  https://github.com/taers232c/GAMADV-XTD3 , then manually run "gam info domain" to create project and authorize everything back and forth with your Admin.google.com account.  Running "gam info domain" again should return a few lines from your domain, not prompt you for things each time, repeat until then.
+- python 3 https://www.python.org/downloads/ or Windows store, include it and pip3 in your PATH/Environment Variables
+- pip3 install subprocess
+- pip3 install openpyxl
+- pip3 install glob
+- pip3 install csv
+- pip3 install os
+
 - keep everything in the same directory
 
 Running the Program
 
 - copy codesExample.xlsx to codes.xls and edit to meet your needs
-- Save inventory xls* file(s) in the same directory with code
-- run Python code, hit enter when asked
+- Save inventory xls* file(s) in the same directory with code, School initials must be present in filename
+- CMD in same directory as code, "python gamCreate.py", and hit enter when asked
 
 gamCreate4Chromebooks.py logic
 
