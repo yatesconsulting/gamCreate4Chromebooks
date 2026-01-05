@@ -3,8 +3,9 @@ Use some spreadsheets to feed Google's gam to create OUs and relocate provisione
 
 Install Requirements
 
-- gam  old: https://github.com/taers232c/GAMADV-XTD3 new: https://github.com/GAM-team/GAM/wiki/Downloads-Installs , then manually run "gam info domain" to create project and authorize everything back and forth with your Admin.google.com account.  Running "gam info domain" again should return a few lines from your domain, not prompt you for things each time, repeat until then.
+- gam  https://github.com/GAM-team/GAM/wiki/Downloads-Installs , follow all instructions to setup a few connections into Admin.Google.com.  If you get an Oauth error, run "gam oauth create".  When done, manually running "gam info domain" should return a few lines from your domain, not prompt you for things each time, repeat setup until then.
 - python 3 https://www.python.org/downloads/ or Windows store, include it and pip3 in your PATH/Environment Variables
+- I recognize these commands should look more like "py -m pip install ___" now, but I can't get that to work...
 - pip3 install subprocess
 - pip3 install openpyxl
 - pip3 install glob
