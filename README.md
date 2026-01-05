@@ -5,12 +5,8 @@ Install Requirements
 
 - gam  https://github.com/GAM-team/GAM/wiki/Downloads-Installs , follow all instructions to setup a few connections into Admin.Google.com.  If you get an Oauth error, run "gam oauth create".  When done, manually running "gam info domain" should return a few lines from your domain, not prompt you for things each time, repeat setup until then.
 - python 3 https://www.python.org/downloads/ or Windows store, include it and pip3 in your PATH/Environment Variables
-- I recognize these commands should look more like "py -m pip install ___" now, but I can't get that to work...
-- pip3 install subprocess
-- pip3 install openpyxl
-- pip3 install glob
-- pip3 install csv
-- pip3 install os
+- py -m pip install openpyxl
+- standard python3 library now includes glob, os, csv, subprocess)
 
 - keep everything in the same directory
 
